@@ -1,0 +1,511 @@
+[
+    {
+        "id": "502a1c85954fa672",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "62192f5cb6b28fa5",
+        "type": "comment",
+        "z": "502a1c85954fa672",
+        "name": "WARNING: please check you have started this container with a volume that is mounted to /data\\n otherwise any flow changes are lost when you redeploy or upgrade the container\\n (e.g. upgrade to a more recent node-red docker image).\\n  If you are using named volumes you can ignore this warning.\\n Double click or see info side panel to learn how to start Node-RED in Docker to save your work",
+        "info": "\nTo start docker with a bind mount volume (-v option), for example:\n\n```\ndocker run -it -p 1880:1880 -v /home/user/node_red_data:/data --name mynodered nodered/node-red\n```\n\nwhere `/home/user/node_red_data` is a directory on your host machine where you want to store your flows.\n\nIf you do not do this then you can experiment and redploy flows, but if you restart or upgrade the container the flows will be disconnected and lost. \n\nThey will still exist in a hidden data volume, which can be recovered using standard docker techniques, but that is much more complex than just starting with a named volume as described above.",
+        "x": 350,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "8e57134035565bf0",
+        "type": "mqtt in",
+        "z": "502a1c85954fa672",
+        "name": "Subscribe / messages",
+        "topic": "nbiot_test",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "6319161a315ddada",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 260,
+        "y": 320,
+        "wires": [
+            [
+                "b119ac084859e7be",
+                "ec181f9921ebf6e6",
+                "90ad12362613b12e"
+            ]
+        ]
+    },
+    {
+        "id": "b119ac084859e7be",
+        "type": "debug",
+        "z": "502a1c85954fa672",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "aeccc0c406b7062e",
+        "type": "mqtt in",
+        "z": "502a1c85954fa672",
+        "name": "Subscribe / Ids",
+        "topic": "nbiot_test_ids",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "6319161a315ddada",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 600,
+        "wires": [
+            [
+                "c52d14fceda4583d",
+                "7ee1910798bd8bb9"
+            ]
+        ]
+    },
+    {
+        "id": "c52d14fceda4583d",
+        "type": "debug",
+        "z": "502a1c85954fa672",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "7ee1910798bd8bb9",
+        "type": "function",
+        "z": "502a1c85954fa672",
+        "name": "split and count number of packet sended",
+        "func": "context.global.set(\"received\", []);\ncontext.global.set(\"ids\", msg.payload.split(\" \"));\nreturn {payload:msg.payload.split(\" \").length};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 600,
+        "wires": [
+            [
+                "96aab3b97a3f97c4"
+            ]
+        ]
+    },
+    {
+        "id": "90ad12362613b12e",
+        "type": "function",
+        "z": "502a1c85954fa672",
+        "name": "get length of received message",
+        "func": "var received = context.global.get(\"received\");\nreturn { payload: received.length };",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 440,
+        "wires": [
+            [
+                "b84ea700a1961331",
+                "ebe0c992f909187d",
+                "cca6530b54ce65aa",
+                "98de9169c7ebae7d"
+            ]
+        ]
+    },
+    {
+        "id": "ec181f9921ebf6e6",
+        "type": "function",
+        "z": "502a1c85954fa672",
+        "name": "store recivedMessages into \"reveived' in global context",
+        "func": "var recivedMessages = context.global.get(\"received\");\nrecivedMessages.push(msg.payload);\ncontext.global.set(\"received\",recivedMessages);\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ebe0c992f909187d",
+        "type": "debug",
+        "z": "502a1c85954fa672",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "f78f3abb208d7c28",
+        "type": "mqtt in",
+        "z": "502a1c85954fa672",
+        "name": "Subscribe / reception delay",
+        "topic": "nbiot_delay",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "6319161a315ddada",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 240,
+        "y": 760,
+        "wires": [
+            [
+                "f397c454d8d890bf",
+                "ad8c09fc5dec7487"
+            ]
+        ]
+    },
+    {
+        "id": "f397c454d8d890bf",
+        "type": "debug",
+        "z": "502a1c85954fa672",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "ad8c09fc5dec7487",
+        "type": "function",
+        "z": "502a1c85954fa672",
+        "name": "Cast payload to Number",
+        "func": "\nreturn {payload:Number(msg.payload)};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 820,
+        "wires": [
+            [
+                "8756d1b46eba5e13",
+                "b1d76038771fcd7e"
+            ]
+        ]
+    },
+    {
+        "id": "96aab3b97a3f97c4",
+        "type": "ui_text",
+        "z": "502a1c85954fa672",
+        "group": "60d0b44c90a11989",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Nombre de messages envoyés",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 890,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "b84ea700a1961331",
+        "type": "ui_text",
+        "z": "502a1c85954fa672",
+        "group": "60d0b44c90a11989",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Nombre de messages recus",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 980,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "cca6530b54ce65aa",
+        "type": "ui_chart",
+        "z": "502a1c85954fa672",
+        "name": "",
+        "group": "60d0b44c90a11989",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Number of received messages",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 990,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8756d1b46eba5e13",
+        "type": "ui_chart",
+        "z": "502a1c85954fa672",
+        "name": "",
+        "group": "60d0b44c90a11989",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Reception Delay",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 820,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "98de9169c7ebae7d",
+        "type": "influxdb out",
+        "z": "502a1c85954fa672",
+        "influxdb": "9b9953e9e8dfbe02",
+        "name": "Packet Received",
+        "measurement": "pdr_value",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "nb_iot",
+        "bucket": "pdr",
+        "x": 950,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "b1d76038771fcd7e",
+        "type": "influxdb out",
+        "z": "502a1c85954fa672",
+        "influxdb": "9b9953e9e8dfbe02",
+        "name": "Delay",
+        "measurement": "delay_value",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "nb_iot",
+        "bucket": "delay",
+        "x": 790,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "e261662abea4188b",
+        "type": "inject",
+        "z": "502a1c85954fa672",
+        "name": "Test function",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "qos",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "p": "retain",
+                "v": "false",
+                "vt": "bool"
+            },
+            {
+                "p": "_msgid",
+                "v": "9cdac8586a56a5dd",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "nbiot_test",
+        "payload": "9ZwfQg",
+        "payloadType": "str",
+        "x": 230,
+        "y": 440,
+        "wires": [
+            [
+                "90ad12362613b12e"
+            ]
+        ]
+    },
+    {
+        "id": "6319161a315ddada",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "60d0b44c90a11989",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "11f1385c6a5c204e",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "9b9953e9e8dfbe02",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "11f1385c6a5c204e",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

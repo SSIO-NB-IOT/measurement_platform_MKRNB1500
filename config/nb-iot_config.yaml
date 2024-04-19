@@ -1,0 +1,37 @@
+arduino:
+  _target_: config.ArduinoConverter # This used by hydra
+  pin: ""
+  token_mqtt: "MyToken" # You have to add token
+  user_name: "MyUserName"
+  device_name: "nb-iot_device"
+  client_id: "CafeKrem"
+  countMessageReceivedTopic: "countMessageReceived"
+  ackMessageReceivedTopic: "AckCountMessageReceived"
+  broker: "MyUserName.cloud.shiftr.io"
+  broker_port: 1883
+  packetSize: 128
+  packetPerSeconds: 10
+  everyMillis: 1000
+  baud_rate: 115200
+  MonitoringCampagnDuration: 600
+  RAT: "8"
+  PTW: "0000"
+  EDRX: "0000"
+  PSM_VERSION: 15
+  isDRXactivated: False
+influxDBEndpoint:
+  _target_: config.InfluxDBEndpointConverter # This used by hydra
+  bucket_list :
+    - energy_consumption
+    - packetReceived
+  organisation: "nb_iot"
+  port_number: 8086
+  ip_address: "localhost"
+  INFLUXDB_TOKEN: "MyInfluxToken" # You have to add token
+SQLEndpoint:
+  _target_: config.SQLEndpointConverter # This used by hydra
+  MYSQL_USER:  "example_user"
+  MYSQL_PASSWORD: "example_password"
+  MYSQL_DATABASE: "example_database"
+  IP_ADDRESS: "127.0.0.1"
+  SQL_PORT: 3306
