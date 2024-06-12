@@ -40,7 +40,7 @@ if __name__ == "__main__":
     template_file_path = Path("arduino_code/template/c_template.jinja")
     context = {
     "pin": "",
-    "token_mqtt": "lCsJI5JE0yuzzJAf",
+    "token_mqtt": "YourToken",
     "user_name": "motleyslicer243",
     "device_name": "nb-iot_device",
     "client_id": "CafeKrem",
