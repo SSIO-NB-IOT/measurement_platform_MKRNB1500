@@ -49,9 +49,13 @@ def start_collecting_scope():
     mqtt_broket = str(os.getenv('MQTT_BROKER',"motleyslicer243.cloud.shiftr.io"))
     port_number = int(os.getenv('MQTT_PORT',1883))
     topic = str(os.getenv('MQTT_TOPIC',"energy_consumption"))
-    token = str(os.getenv('MQTT_TOKEN',"zo3J5q6OUgNM5phA"))
+    token = str(os.getenv('MQTT_TOKEN',None))
+    if token is None:
+        raise Exception("You have to set an MQTT token of your MQTT broker")
     resistance = float(os.getenv('RESISTANCE',100))
-    username = str(os.getenv('MQTT_USERNAME',"motleyslicer243"))
+    username = str(os.getenv('MQTT_USERNAME',None))
+    if token is None:
+        raise Exception("You have to set an MQTT username of your MQTT broker")
     # generate a random client id 
     client_id = f'python-mqtt-{random.randint(0, 1000)}:{token}'
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2,client_id=client_id)
