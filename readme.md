@@ -12,7 +12,7 @@ Thanks to the members of this project :
 - Clément Dutriez, https://github.com/CafeKrem
 
 During the student project :
-Abir Hammache [GitHub account]([https://github.com/benayyad12](https://github.com/HammacheAbir)) was the project leader, and she was responsible for the code of the arduino and the chip configuration.
+Abir Hammache [GitHub account](https://github.com/HammacheAbir) was the project leader, and she was responsible for the code of the arduino and the chip configuration.
 Abdessalam Benayyad, [GitHub account](https://github.com/benayyad12), he was responsible for the deployment of the monitoring campagn.
 Clément Dutriez was the product owner and teacher.
 
